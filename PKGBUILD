@@ -1,4 +1,3 @@
-# $Id: PKGBUILD,v 1.8 2008/03/26 21:21:04 juergen Exp $
 # Maintainer: Juergen Hoetzel <juergen@archlinux.org>
 # Contributor: Renchi Raju <renchi@green.tam.uiuc.edu>
 pkgname=emacs
