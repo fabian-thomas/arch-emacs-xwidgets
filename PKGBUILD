@@ -1,5 +1,6 @@
 # Maintainer: Juergen Hoetzel <juergen@archlinux.org>
 # Contributor: Renchi Raju <renchi@green.tam.uiuc.edu>
+
 pkgname=emacs
 _majorver=23.3
 _minorver=a
@@ -14,9 +15,8 @@ url="http://www.gnu.org/software/emacs/emacs.html"
 license=('GPL3')
 depends=('librsvg' 'gpm' 'giflib' 'libxpm' 'gtk2' 'hicolor-icon-theme' 'gconf' 'desktop-file-utils' 'alsa-lib')
 install=emacs.install
-source=(ftp://ftp.gnu.org/gnu/emacs/$pkgname-$_realver.tar.gz emacs.desktop)
-md5sums=('20aef9ea5b5bf8050d39f8b1e96a1c04'
-         '8af038d2ba4561271e935bb444ceb4e3')
+source=(ftp://ftp.gnu.org/gnu/emacs/$pkgname-$_realver.tar.gz)
+md5sums=('20aef9ea5b5bf8050d39f8b1e96a1c04')
 
 build() {
   cd "$srcdir"/$pkgname-$_majorver
@@ -41,9 +41,4 @@ package() {
   chmod 775 "$pkgdir"/var/games/emacs
   chmod 664 "$pkgdir"/var/games/emacs/*
   chown -R root:games "$pkgdir"/var/games
-
-  # fix  FS#9253
-  mkdir -p "$pkgdir"/usr/share/pixmaps "$pkgdir"/usr/share/applications
-  install -D -m644 "$srcdir"/$pkgname.desktop   "$pkgdir"/usr/share/applications
-  ln -s  ../emacs/$_majorver/etc/images/icons/hicolor/48x48/apps/emacs.png "$pkgdir"/usr/share/pixmaps/emacs-icon.png
 }
