@@ -65,6 +65,7 @@ build() {
     --with-tree-sitter \
     --localstatedir=/var \
     --with-cairo \
+    --disable-build-details \
     --with-harfbuzz \
     --with-libsystemd \
     --with-modules"
