@@ -42,6 +42,7 @@ depends=(
   libxfixes
   libxml2.so
   m17n-lib
+  tree-sitter
   zlib
 )
 makedepends=(libgccjit)
@@ -61,6 +62,7 @@ build() {
   local _confflags="--sysconfdir=/etc \
     --prefix=/usr \
     --libexecdir=/usr/lib \
+    --with-tree-sitter \
     --localstatedir=/var \
     --with-cairo \
     --with-harfbuzz \
