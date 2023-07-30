@@ -52,9 +52,9 @@ validpgpkeys=('17E90D521672C04631B1183EE78DAE0F3115E06B'  # Eli Zaretskii <eliz@
               'CEA1DE21AB108493CC9C65742E82323B8F4353EE') # Stefan Kangas <stefankangas@gmail.com>
 
 prepare() {
-  cp -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-nativecomp
-  cp -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-nox
-  cp -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-wayland
+  cp --reflink=auto -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-nativecomp
+  cp --reflink=auto -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-nox
+  cp --reflink=auto -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-wayland
 }
 
 build() {
