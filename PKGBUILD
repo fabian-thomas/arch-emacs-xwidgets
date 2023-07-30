@@ -6,7 +6,7 @@
 pkgbase=emacs
 pkgname=(emacs emacs-nativecomp emacs-nox emacs-wayland)
 pkgver=29.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='https://www.gnu.org/software/emacs/emacs.html'
 license=('GPL3')
