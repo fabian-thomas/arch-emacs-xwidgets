@@ -4,7 +4,7 @@
 # Contributor: Renchi Raju <renchi@green.tam.uiuc.edu>
 
 pkgbase=emacs
-pkgname=(emacs emacs-nativecomp emacs-nox emacs-wayland)
+pkgname=(emacs-nativecomp)
 pkgver=29.1
 pkgrel=4
 arch=('x86_64')
@@ -49,16 +49,14 @@ depends=(
   zlib
 )
 makedepends=(libgccjit)
-source=(https://ftp.gnu.org/gnu/emacs/${pkgname}-${pkgver}.tar.xz{,.sig})
+source=(https://ftp.gnu.org/gnu/emacs/${pkgbase}-${pkgver}.tar.xz{,.sig})
 b2sums=('5bec8fd7c63c04b93b2ad87c12c48373930c1b3c6984d139938ad1eb692af76417dc5494057225a04f77ce4797958056aa3522f50e3b0565ef5f060bb15f5402'
         'SKIP')
 validpgpkeys=('17E90D521672C04631B1183EE78DAE0F3115E06B'  # Eli Zaretskii <eliz@gnu.org>
               'CEA1DE21AB108493CC9C65742E82323B8F4353EE') # Stefan Kangas <stefankangas@gmail.com>
 
 prepare() {
-  cp --reflink=auto -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-nativecomp
-  cp --reflink=auto -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-nox
-  cp --reflink=auto -ar ${pkgname}-${pkgver} ${pkgbase}-${pkgver}-wayland
+  cp --reflink=auto -ar ${pkgbase}-${pkgver} ${pkgbase}-${pkgver}-nativecomp
 }
 
 build() {
@@ -75,45 +73,13 @@ build() {
 
   export ac_cv_lib_gif_EGifPutExtensionLast=yes
 
-  cd ${pkgname}-${pkgver}
-  ./configure $_confflags \
-    --with-x-toolkit=gtk3
-  make
-
-  cd ../${pkgbase}-${pkgver}-nativecomp
+  cd ${pkgbase}-${pkgver}-nativecomp
   ./configure \
     --with-x-toolkit=gtk3 \
+    --with-xwidgets \
     --with-native-compilation=aot \
     $_confflags
   make bootstrap
-
-  cd ../${pkgbase}-${pkgver}-nox
-  ./configure \
-    --without-x \
-    --without-sound \
-    $_confflags
-  make
-
-  cd ../${pkgbase}-${pkgver}-wayland
-  ./configure \
-    --with-pgtk \
-    --with-native-compilation=aot \
-    $_confflags
-  make bootstrap
-}
-
-package_emacs() {
-  pkgdesc='The extensible, customizable, self-documenting real-time display editor'
-
-  cd ${pkgname}-${pkgver}
-  make DESTDIR="${pkgdir}" install
-
-  # remove conflict with ctags package
-  mv "${pkgdir}"/usr/bin/{ctags,ctags.emacs}
-  mv "${pkgdir}"/usr/share/man/man1/{ctags.1.gz,ctags.emacs.1}
-
-  # fix user/root permissions on usr/share files
-  find "${pkgdir}"/usr/share/emacs/${pkgver} -exec chown root:root {} \;
 }
 
 package_emacs-nativecomp() {
@@ -123,54 +89,6 @@ package_emacs-nativecomp() {
   conflicts=(emacs)
 
   cd ${pkgbase}-${pkgver}-nativecomp
-  make DESTDIR="${pkgdir}" install
-
-  # remove conflict with ctags package
-  mv "${pkgdir}"/usr/bin/{ctags,ctags.emacs}
-  mv "${pkgdir}"/usr/share/man/man1/{ctags.1.gz,ctags.emacs.1}
-
-  # fix user/root permissions on usr/share files
-  find "${pkgdir}"/usr/share/emacs/${pkgver} -exec chown root:root {} \;
-}
-
-package_emacs-nox() {
-  pkgdesc='The extensible, customizable, self-documenting real-time display editor without X11 support'
-  depends=(
-    gmp
-    gnutls
-    hicolor-icon-theme
-    jansson
-    lcms2
-    libacl.so
-    libdbus-1.so
-    libgpm.so
-    libncursesw.so
-    libsystemd.so
-    libtree-sitter.so
-    libxml2.so
-    zlib
-  )
-  provides=(emacs)
-  conflicts=(emacs)
-
-  cd ${pkgbase}-${pkgver}-nox
-  make DESTDIR="${pkgdir}" install
-
-  # remove conflict with ctags package
-  mv "${pkgdir}"/usr/bin/{ctags,ctags.emacs}
-  mv "${pkgdir}"/usr/share/man/man1/{ctags.1.gz,ctags.emacs.1}
-
-  # fix user/root permissions on usr/share files
-  find "${pkgdir}"/usr/share/emacs/${pkgver} -exec chown root:root {} \;
-}
-
-package_emacs-wayland() {
-  pkgdesc='The extensible, customizable, self-documenting real-time display editor with native compilation and PGTK enabled'
-  depends+=(libgccjit)
-  provides=(emacs)
-  conflicts=(emacs)
-
-  cd ${pkgbase}-${pkgver}-wayland
   make DESTDIR="${pkgdir}" install
 
   # remove conflict with ctags package
