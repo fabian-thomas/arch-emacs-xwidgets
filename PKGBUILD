@@ -77,13 +77,14 @@ build() {
   ./configure \
     --with-x-toolkit=gtk3 \
     --with-xwidgets \
+    --with-pgtk \
     --with-native-compilation=aot \
     $_confflags
   make bootstrap
 }
 
 package_emacs-nativecomp() {
-  pkgdesc='The extensible, customizable, self-documenting real-time display editor with native compilation enabled'
+  pkgdesc='The extensible, customizable, self-documenting real-time display editor with native compilation, xwidgets and PGTK enabled'
   depends+=(libgccjit)
   provides=(emacs)
   conflicts=(emacs)
